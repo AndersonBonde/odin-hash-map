@@ -1,3 +1,5 @@
+const linkedList = require('./linkedList.js');
+
 function hashMap(initialCapacity = 16, givenLoadFactor = .75) {
   const loadFactor = givenLoadFactor;
   let capacity = initialCapacity;
@@ -33,24 +35,33 @@ function hashMap(initialCapacity = 16, givenLoadFactor = .75) {
     const _hash = hash(key);
     const obj = {};
     obj[key] = value;
+    let list = buckets[_hash];
 
-    buckets[_hash] = obj;
+    if (list === null) {
+      list = linkedList();
+      list.append(obj);
+      buckets[_hash] = list;
+    } else {
+      if (list.contains(key)) {
+        const index = list.find(key);
+        list.removeAt(index);
+      } 
+
+      list.append(obj);
+    }
+    
     checkCapacity();
   }
 
   function get(key) {
     const _hash = hash(key);
+    const list = buckets[_hash];
 
-    if (buckets[_hash] !== null) {
-      const k = Object.keys(buckets[_hash]);
+    if (list) {
+      if(!list.contains(key)) return null;
 
-      if (k == key) {
-        return buckets[_hash][key];
-      } else {
-        return null;
-      }
-    } else {
-      return buckets[_hash];
+      const index = list.find(key);
+      return list.at(index);
     }
   }
 
@@ -62,11 +73,5 @@ function hashMap(initialCapacity = 16, givenLoadFactor = .75) {
 }
 const myHash = hashMap();
 myHash.set('Anderson', 'Nice');
-myHash.set('Hi', 'I"m under the water');
-console.log(myHash.buckets);
-
-console.log('get("Anderson"):', myHash.get('Anderson'));
-console.log('get("anderson"):', myHash.get('anderson'));
-console.log('get("Nice"):', myHash.get('Nice'));
-console.log('get("Hi"):', myHash.get('Hi'));
-console.log('get("hi"):', myHash.get('hi'));
+myHash.set('Hello', 'I"m under the water');
+console.log(myHash.get('Anderson'));
