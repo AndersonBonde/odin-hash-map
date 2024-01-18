@@ -2,16 +2,19 @@ const node = require('./node.js');
 
 function linkedList() {
   let _head = null;
+  let _tail = null;
   let _size = 0;
 
   const prepend = (value) => {
     _size += 1;
     _head = node(value, _head);
+
+    if (_size === 1) _tail = _head;
   }
 
   const append = (value) => {
     if(_head === null) {
-      prepend(value); 
+      prepend(value);
       return;
     }
 
@@ -20,6 +23,7 @@ function linkedList() {
 
     while(curr.next !== null) curr = curr.next;
     curr.next = node(value, null);
+    _tail = curr.next;
   }
 
   const tail = () => {
@@ -55,8 +59,13 @@ function linkedList() {
       curr = curr.next;
     }
 
-    if (prev) prev.next = null;
-    else _head = null;
+    if (prev) {
+      prev.next = null;
+      _tail = prev;
+    } else {
+      _head = null;
+      _tail = null;
+    }
 
     const value = Object.values(curr.data)[0];
     return value;
@@ -138,13 +147,14 @@ function linkedList() {
     if (index == 0) _head = curr.next;
     else prev.next = curr.next;
 
+    _tail = tail();
     _size -= 1;
   }
 
   return {
     get head() { return _head; },
     get size() { return _size },
-    get tail() { return tail() },
+    get tail() { return _tail },
     prepend,
     append,
     at,
