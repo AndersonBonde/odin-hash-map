@@ -33,12 +33,15 @@ function linkedList() {
     let idx = 0;
     let curr = _head;
 
+    if (num >= _size) throw new Error('Index out of bounds: The specified index exceeds the size of the list.')
+
     while(idx < num) {
       curr = curr.next;
       idx += 1;
     }
-
-    return curr !== null ? Object.values(curr.data)[0] : 'Not a valid index';
+    
+    const value = Object.values(curr.data)[0];
+    return value;
   }
 
   const pop = () => {
@@ -52,8 +55,11 @@ function linkedList() {
       curr = curr.next;
     }
 
-    prev.next = null;
-    return curr;
+    if (prev) prev.next = null;
+    else _head = null;
+
+    const value = Object.values(curr.data)[0];
+    return value;
   }
 
   const contains = (key) => {
@@ -71,7 +77,7 @@ function linkedList() {
     let curr = _head;
     let idx = 0;
 
-    while(curr.next !== null) {
+    while(curr !== null) {
       if(Object.keys(curr.data)[0] == key) return idx;
 
       curr = curr.next;
@@ -83,19 +89,16 @@ function linkedList() {
 
   const toString = () => {
     let curr = _head;
-    let str = '';
+    let messageArr = [];
 
-    if(_head === null) return str += 'null';
-
-    while(curr.next !== null) {
-      str += ` ( ${curr.data} ) ->`;
+    while(curr !== null) {
+      messageArr.push(Object.values(curr.data)[0]);
 
       curr = curr.next;
     }
-    str += ` ( ${curr.data} ) ->`;
-    str += ` null'`;
+    messageArr.push('null');
 
-    return str;
+    return messageArr.join(' -> ');
   }
 
   const insertAt = (value, index) => {
@@ -106,7 +109,7 @@ function linkedList() {
     if(index === 0) {
       prepend(value);
     } else {
-      if(index > _size) return console.error('Invalid index for insertion.');
+      if(index > _size) throw new Error('Invalid index for insertion.');
 
       while(index !== i) {
         prev = curr;
@@ -124,7 +127,7 @@ function linkedList() {
     let curr = _head;
     let i = 0;
 
-    if(index >= _size) return console.error('Invalid index for deletion');
+    if(index >= _size) throw new Error('Invalid index for deletion');
 
     while(i < index) {
       prev = curr;
@@ -132,7 +135,9 @@ function linkedList() {
       i += 1;
     }
 
-    prev.next = curr.next;
+    if (index == 0) _head = curr.next;
+    else prev.next = curr.next;
+
     _size -= 1;
   }
 
