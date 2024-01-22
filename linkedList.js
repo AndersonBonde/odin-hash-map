@@ -27,6 +27,7 @@ function linkedList() {
   }
 
   const tail = () => {
+    if (_head === null) return null;
     let curr = _head;
 
     while(curr.next !== null) curr = curr.next;
@@ -44,7 +45,7 @@ function linkedList() {
       idx += 1;
     }
     
-    const value = Object.values(curr.data)[0];
+    const value = curr.data;
     return value;
   }
 
@@ -67,7 +68,7 @@ function linkedList() {
       _tail = null;
     }
 
-    const value = Object.values(curr.data)[0];
+    const value = curr.data;
     return value;
   }
 
@@ -75,7 +76,7 @@ function linkedList() {
     let curr = _head;
 
     while(curr !== null) {
-      if(Object.keys(curr.data)[0] == key) return true;
+      if(curr.data == key) return true;
       curr = curr.next;
     }
 
@@ -87,7 +88,7 @@ function linkedList() {
     let idx = 0;
 
     while(curr !== null) {
-      if(Object.keys(curr.data)[0] == key) return idx;
+      if(curr.data == key) return idx;
 
       curr = curr.next;
       idx += 1;
@@ -101,7 +102,7 @@ function linkedList() {
     let messageArr = [];
 
     while(curr !== null) {
-      messageArr.push(Object.values(curr.data)[0]);
+      messageArr.push(curr.data);
 
       curr = curr.next;
     }
@@ -127,6 +128,8 @@ function linkedList() {
       }
 
       prev.next = node(value, curr);
+
+      if (index === _size) _tail = prev.next;
       _size += 1;
     }
   }
@@ -144,7 +147,7 @@ function linkedList() {
       i += 1;
     }
 
-    if (index == 0) _head = curr.next;
+    if (index === 0) _head = curr.next;
     else prev.next = curr.next;
 
     _tail = tail();
