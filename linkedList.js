@@ -45,8 +45,8 @@ function linkedList() {
       idx += 1;
     }
     
-    const value = curr.data;
-    return value;
+    const [k, val] = curr.data;
+    return val;
   }
 
   const pop = () => {
@@ -76,7 +76,8 @@ function linkedList() {
     let curr = _head;
 
     while(curr !== null) {
-      if(curr.data == key) return true;
+      const [k, val] = curr.data;
+      if(k == key) return true;
       curr = curr.next;
     }
 
@@ -88,7 +89,8 @@ function linkedList() {
     let idx = 0;
 
     while(curr !== null) {
-      if(curr.data == key) return idx;
+      const [k, val] = curr.data;
+      if(k == key) return idx;
 
       curr = curr.next;
       idx += 1;
