@@ -46,7 +46,7 @@ function linkedList() {
     }
     
     const [k, val] = curr.data;
-    return val;
+    return curr.data;
   }
 
   const pop = () => {
